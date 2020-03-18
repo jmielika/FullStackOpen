@@ -1,0 +1,1 @@
+Tässä projektissa suoritan Helsingin yliopiston Fullstack webbi devauskurssia
