@@ -1,0 +1,16 @@
+﻿title Muistiinpanojen lähettäminen spa:lla
+
+note over Selain
+selaimessa käsitellään js-koodissa
+muistiinpanon lähettäminen. Koodilla
+estetään lomakkeen oletustoiminta, eli
+sivun uudelleenlataus. Selain lisää muistiinpanon
+listaan, piirtää listan uudelleen sivulle ja lähettää
+uuden muistiinpanon palvelimelle
+end note
+
+Selain->Palvelin: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+Palvelin-->Selain: Status code 201 created
+
+
+
