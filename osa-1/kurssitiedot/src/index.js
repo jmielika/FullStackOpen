@@ -1,64 +1,80 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+// Ottaa vastaan props oliona kurssin nimen ja palauttaa h1 muotoisena otsikkona
+// kurssin nimen html:nä 
 const Header = (props) => {
   return (
     <div>
-      <h1>{props.course}</h1>
+      <h1>{props.course.name}</h1>
     </div>
   )
 }
 
+// Ottaa vastaan taulukkona kurssin osat. Kurssin osat palautetaan nimen
+// ja kurssin tehtävien määrän kanssa <p></p> html elementteinä
 const Content = (props) => {
   return (
-    <div>
-      
-      <Part part={props.part1} excercise={props.exercises1} />
-      <Part part={props.part2} excercise={props.exercises2} />
-      <Part part={props.part3} excercise={props.exercises3} />
-    </div>
+    <>
+      <Part part={props.parts[0].name} exercise={props.parts[0].exercises} />
+      <Part part={props.parts[1].name} exercise={props.parts[1].exercises} />
+      <Part part={props.parts[2].name} exercise={props.parts[2].exercises} />
+    </>
   )
+
 }
 
+// ottaa vastaan kurssin osat taulukkona. Laskee tehtävien kokonaismäärän
+// ja palauttaa <p> html elementin, jossa lukee kurssin tehtävien kokonasimäärä
 const Total = (props) => {
+  const total = props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises
+  return (
+    <>
+      <p>
+     Number of excercises {total}
+      </p>
+    </>
+  )
+}
+
+// ottaa vastaan kurssin yhden osan ja palauttaa <p> elementtinä muodossa
+// kurssin nimi + tehtävien määrä esim. 'javascript 8' 
+const Part = (props) => {
+  console.log(props.exercise)
   return (
     <div>
-      <p>
-        Number of excercises {props.exercises[0] + props.exercises[1] + props.exercises[2]}
-      </p>
+      <p> {props.part} {props.exercise} </p>
     </div>
   )
 }
 
-const Part = (props) => {
-  return (
-    <div>
-      <p>
-        {props.part} {props.excercise}
-      </p>
-    </div>
-  )
-}
+
 
 const App = () => {
-  const course = 'Half Stack application development'
-  const part1 = 'Fundamentals of React'
-  const exercises1 = 10
-  const part2 = 'Using props to pass data'
-  const exercises2 = 7
-  const part3 = 'State of a component'
-  const exercises3 = 14
-  const parts = [part1, part2, part3]
-  const exercises = [exercises1, exercises2, exercises3]
+  const course = {
+    name: 'Half Stack application development',
+    parts: [
+      {
+        name: 'Fundamentals of React',
+        exercises: 10
+      },
+      {
+        name: 'Using props to pass data',
+        exercises: 7
+      },
+      {
+        name: 'State of a component',
+        exercises: 14
+      }
+    ]
+  }
+
 
   return (
     <>
       <Header course={course} />
-      <Content 
-      part1={part1} exercises1={exercises1}
-      part2={part2} exercises2={exercises2}
-      part3={part3} exercises3={exercises3} />
-      <Total exercises={exercises} />
+      <Content parts={course.parts} />
+      <Total parts={course.parts} />
     </>
 
   )
