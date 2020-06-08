@@ -9,4 +9,4 @@ Sessio                    Kesto         Yhteensä
           13:25->16:28  = 3h 03min       9h 05min
 ------------------------------------------------
  3.4.2020  9:30->12:15  = 2h 45min      
-          12:50->13:20  = 0h 30min      12h 20min Osa 1 tehty
+          12:50->13:20  = 0h 30min      12h 20min Osa 1 tehty aikaa kului 10h 40min
