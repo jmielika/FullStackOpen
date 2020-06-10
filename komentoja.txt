@@ -1,0 +1,7 @@
+npm start // käynnistää react appin paikallisesti
+npx create-react-app projektin-nimi // luo tiedostot reactia varten, poista .git juuresta
+git status
+git add .
+git commit -m "kommentit tähän"
+git push
+git pull
