@@ -4,12 +4,7 @@ const App = (props) => {
   const [ persons, setPersons] = useState(props.persons) 
   const [ newName, setNewName ] = useState('')
   const [ nameFilter, setNameFilter] = useState('')
-  const [ newPhoneNumber, setNewPhoneNumber] = useState('')
-
-  const addToPersonsAndFiltered = (personObject) => {
-    setPersons(persons.concat(personObject))
-    setFilteredPersons(filteredPersons.concat(personObject))
-  }
+  const [ newPhoneNumber, setNewPhoneNumber ] = useState('')
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -23,13 +18,12 @@ const App = (props) => {
 
     persons.map(person => person.name).includes(newName, 0)
     ? window.alert(`${newName} is already added to phonebook`)
-    : addToPersonsAndFiltered(personObject)
-
-    //setFilteredPersons(filterNames(persons, nameFilter))
+    : setPersons(persons.concat(personObject))
 
     console.log(persons)
    
-    setNameFilter('')
+    
+    //setNameFilter('')
     setNewName('')
     setNewPhoneNumber('')
   }
@@ -48,7 +42,7 @@ const App = (props) => {
     setNewPhoneNumber(event.target.value)
   }
 
-  const [filteredPersons, setFilteredPersons] = useState([...persons])
+  
 
   const filterNames = (arr, arg) => {
     return arr.filter(person => person.name.toLowerCase().indexOf(arg.toLowerCase()) !== -1)
@@ -56,10 +50,11 @@ const App = (props) => {
 
   const handleFilterChange = (event) => {
     setNameFilter(event.target.value)
-    setFilteredPersons(filterNames(persons, event.target.value))
     //filteredPersons = persons.filter(person => person.name.toLowerCase().indexOf(nameFilter.toLowerCase()))
 
   }
+
+ //const filteredPersons = !nameFilter ? persons : persons.filter(person => person.name.tolocaleLowerCase().includes(nameFilter.toLocaleLowerCase()))
 
   return (
     <div>
@@ -67,6 +62,8 @@ const App = (props) => {
       <form onSubmit={addPerson}>
         <div>filter shown with 
           <input  
+                  type="text"
+                  placeholder="Search name..."
                   value={nameFilter}
                   onChange={handleFilterChange} />
         </div>
@@ -87,10 +84,17 @@ const App = (props) => {
       </form>
       <h2>Numbers</h2>
       <ul>
-        {filteredPersons.map((person, name) => {
-          //console.log(person)
-          return <Person key={name} person={person} />
-        })}
+        {nameFilter.toString() === ''
+                    ? persons.map((person, name) => {
+                          console.log('filtteröimätön')
+                          return <Person key={name} person={person} /> 
+                      })
+                      
+                    : filterNames( persons, nameFilter).map((person, name) => {
+                          console.log('filtteröity')
+                          return <Person key={name} person={person} />
+                    })
+        }
       </ul>
     </div>
   )
