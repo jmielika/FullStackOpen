@@ -8,7 +8,9 @@ const Courses = (props) => {
 
   return ( 
   <>
-    {courses.map(course => <Course course={course} key={course.id}/>)}
+    {courses.map(course => {
+      return <Course course={course} key={course.id} />
+    })}
   </>
 
   )
@@ -18,7 +20,7 @@ const Courses = (props) => {
 // Vastaanottaa yhden kurssin tiedot ja tiedot sen osista
 // palauttaa html-elementit kurssin osista.
 const Course = (props) => {
-const { course } = props
+  const { course } = props
 
   return (
     <>

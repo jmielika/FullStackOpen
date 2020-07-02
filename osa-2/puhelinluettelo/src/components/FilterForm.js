@@ -1,13 +1,16 @@
 import React from 'react'
 
-const filterNames = (arr, arg) => {
-    return arr.filter(person => person.name.toLowerCase().indexOf(arg.toLowerCase()) !== -1)
-  }
 
-const FilterForm = (props) => {
+
+const FilterForm = ({onChange, nameFilter}) => {
+
     return (
-        <div>
-
+        <div>filter shown with  
+          <input  
+                  type="text"
+                  placeholder="Search name..."
+                  value={nameFilter}
+                  onChange={onChange} />
         </div>
     )
 }

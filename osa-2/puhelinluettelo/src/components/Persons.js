@@ -1,45 +1,19 @@
 import React from 'react'
+// import filterNames  from './FilterForm'
 
-const Person = (props) => {
+const Person = (props) => (<li>{props.person.name} {props.person.number}</li>)
+
+const FilteredPersons = ({ persons, nameFilter}) => {
     return (
-    <li>{props.person.name} {props.person.number}</li>
-    )
-  }
-
-const addPerson = (event) => {
-    event.preventDefault()
-  
-    const personObject ={
-      name: newName,
-      number: newPhoneNumber
-    }
-
-    console.log(persons)    
-
-    persons.map(person => person.name).includes(newName, 0)
-    ? window.alert(`${newName} is already added to phonebook`)
-    : setPersons(persons.concat(personObject))
-
-    
-    
-
-    //setFilteredPersons(filterNames(persons, nameFilter))
-
-    console.log(persons)
-   
-    
-    //setNameFilter('')
-    setNewName('')
-    setNewPhoneNumber('')
-  }
-
-
-const Persons = (props) => {
-    return (
-        <div>
-
-        </div>
-    )
+        <ul>
+        {filterNames(persons, nameFilter).map((person, name) => <Person key={name} person={person} />)}
+        </ul>)
 }
+
+
+
+const filterNames = (arr, arg) => arr.filter(person => person.name.toLowerCase().indexOf(arg.toLowerCase()) !== -1)
+
+const Persons = ({ persons, nameFilter}) => <FilteredPersons persons={persons} nameFilter={nameFilter} />
 
 export default Persons
