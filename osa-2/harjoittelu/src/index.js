@@ -2,7 +2,13 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 
-const notes = [
+
+
+
+ReactDOM.render(<App />, document.getElementById('root'))
+
+
+/*const notes = [
   {
     id: 1,
     content: 'HTML is easy',
@@ -21,9 +27,9 @@ const notes = [
     date: '2020-01-10T19:20:14.298Z',
     important: true
   }
-]
+]*/
 
-ReactDOM.render(
+/*ReactDOM.render(
   <App notes={notes} />,
   document.getElementById('root')
-)
+)*/
