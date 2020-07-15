@@ -6,7 +6,7 @@ import Countries from './components/Countries'
 import axios from 'axios'
 
 const App = () => {
-  const [ countryFilter, setCountryFilter ] = useState('')
+  const [ countryFilter, setCountryFilter ] = useState('fre')
   const [ countries, setCountries ] = useState([])
 
   const handleFilterChange = (event) => {

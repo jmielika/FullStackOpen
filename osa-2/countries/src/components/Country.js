@@ -1,4 +1,6 @@
 import React, {useState} from 'react'
+import Weather from './Weather'
+import Image from './Image'
 
 
 const Languages = ({country}) => {
@@ -11,16 +13,7 @@ const Languages = ({country}) => {
 
 const Language = ({ key, language }) => <li key={key}>{language.name}</li>
 
-const Image = ({ src, alt, title, width, height}) => {
-    return(
-        <img
-            src={src}
-            alt={alt}
-            title={title}
-            width={width}
-            height={height} />
-    )
-}
+
 
 const Country = ({key, country, list}) => {
     
@@ -42,8 +35,9 @@ const Country = ({key, country, list}) => {
                             <Languages key={country.name} country={country} />
                         </ul>
                         <p>
-                            <Image src={country.flag} alt="Country's flag should be here" title="Country's flag" width='25%' height='25%'/>
+                            <Image src={country.flag} alt="Country's flag should be here" title={country.name.concat('s flag')} width='25%' height='25%'/>
                         </p>
+                        <Weather capital={country.capital}/>
                 </li>
             :   <li key={key}>
                     {country.name} <button onClick={() => setShowStats(!showStats)}>
