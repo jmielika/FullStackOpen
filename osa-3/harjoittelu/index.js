@@ -2,6 +2,10 @@ const express = require('express')
 const { response } = require('express')
 const app = express()
 
+
+
+app.use(express.json())
+
 let notes = [
     {
       id: 1,
@@ -43,7 +47,7 @@ app.get('/api/notes/:id', (req, res) => {
     }
 })
 
-app.use(express.json())
+
 
 const generateId = () => {
   const maxId = notes.length > 0
@@ -63,6 +67,7 @@ app.post('/api/notes', (request, response) => {
     })
   }
 
+  
   const note = {
     content: body.content,
     important: body.important || false,
