@@ -16,11 +16,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "json-server -p3001 --watch db.json",
-    "build:ui": "rm -rf build && cd ../../osa-3/phonebook && npm run build --prod && cp -r build ../../../osa-3-ignore/",
-    "deploy": "git push heroku master",
-    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",    
-    "logs:prod": "heroku logs --tail"
+    "server": "json-server -p3001 --watch db.json"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -39,5 +35,6 @@
   },
   "devDependencies": {
     "json-server": "^0.16.1"
-  }
+  },
+  "proxy": "http://localhost:3001"
 }

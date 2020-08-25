@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import personsService from './services/persons'
+import peopleService from './services/people'
 
-import Persons from './components/Persons'
+import People from './components/People'
 import FilterForm from './components/FilterForm'
 import PersonForm from './components/PersonForm'
 import Notification from './components/Notification'
@@ -9,7 +9,7 @@ import Notification from './components/Notification'
 
 
 const App = () => {
-  const [ persons, setPersons] = useState([]) 
+  const [ people, setPeople] = useState([]) 
   const [ newName, setNewName ] = useState('')
   const [ newPhoneNumber, setNewPhoneNumber ] = useState('')
   const [ nameFilter, setNameFilter] = useState('')
@@ -22,74 +22,90 @@ const App = () => {
 
 
   useEffect(() => {
-    personsService
+    peopleService
       .getAll()
-      .then(initialPersons => {
-        setPersons(initialPersons)
+      .then(initialPeople => {
+        setPeople(initialPeople)
       }) 
     }, [])
 
 
-
-  const addPerson = (event) => {
-    event.preventDefault()
-  
-    let personObject ={
-      name: newName,
-      number: newPhoneNumber
-    }    
-
-    const checkPersonOccurrency = persons.filter(person => person.name.toLocaleLowerCase() === newName.toLocaleLowerCase())
-    console.log(checkPersonOccurrency)
-    if (checkPersonOccurrency.length === 1) {
-      console.log(checkPersonOccurrency[0].id)
-       personObject = {...personObject, id: checkPersonOccurrency[0].id}
-    }
-
-    if (checkPersonOccurrency.map(person => person.name.toLocaleLowerCase).includes(newName.toLocaleLowerCase, 0)) {
-      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
-
-        console.log(`${personObject.name} is added, changing number`)
-
-        personsService
-          .update(personObject.id, personObject)
+  const updatePerson = (person) => {
+    peopleService
+          .update(person.id, person)
           .then(returnedPerson => {
-            setPersons(persons.map(personOrig => personOrig.id !== personObject.id ? personOrig : returnedPerson))
+            setPeople(people.map(personOrig => personOrig.id !== person.id ? personOrig : returnedPerson))
           })
           .catch(error => {
-            setPersons(persons.filter(person => person.id !== personObject.id))
-            setErrorMessage({ message: `Information of ${personObject.name} has already been removed from server`, type: 'errorUnsuccessful'})
+            error.response.data.error 
+            ? setErrorMessage({ message: error.response.data.error, type: 'errorUnsuccessful' })
+            : setErrorMessage({ message: `No data of ${person.name} on the server, deleting person`, type: 'errorUnsuccessful' })
             setTimeout(() => {
             setErrorMessage(null)
         }, 5000)
           })  
-        setErrorMessage({ message: `${personObject.name}'s number changed to ${personObject.number}`, type: 'errorSuccessful'})
+        setErrorMessage({ message: `${person.name}'s number changed to ${person.number}`, type: 'errorSuccessful'})
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
-      } 
 
       setNewName('')
       setNewPhoneNumber('')
-
-    } else {
-      console.log(`${personObject.name} is a new person, adding person to the database`)
-      personsService
-        .create(personObject)
-        .then(returnedPerson => {
-          setPersons(persons.concat(returnedPerson))
-          setNewName('')
-          setNewPhoneNumber('')
-        })
-      setErrorMessage({
-        message: `${personObject.name} and their number ${personObject.number} added to the phonebook`,
-        type: 'errorSuccessful'
-      })
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
-      }    
   }
+
+
+  const handleAddOrEditPerson = (event) => {
+    event.preventDefault()
+  
+
+    let personObject ={
+      name: '' + newName.trim().replace(/  +/g, ' '),
+      number: '' + newPhoneNumber.trim().replace(/  +/g, ' ')
+    }    
+
+    
+
+    const checkPersonOccurrency = people.filter(person => person.name.toLocaleLowerCase().trim().replace(/  +/g, ' ') === personObject.name.toLocaleLowerCase())
+    
+    if (checkPersonOccurrency.length > 0) {
+       personObject = {...personObject, id: checkPersonOccurrency[0].id}
+    
+    if (window.confirm(`${personObject.name} has ${checkPersonOccurrency.length} entries in phonebook, want replace every entry of old number with a new one?`)) {
+        checkPersonOccurrency.forEach(personToBeDeleted => {
+          if (personToBeDeleted.id !== personObject.id) {
+            peopleService
+              .deletePerson(personToBeDeleted.id)
+              .then(() => { setPeople(people.filter(person => personToBeDeleted.id !== person.id))
+            })
+          }
+        })  
+      updatePerson(personObject)
+      setNewName('')
+      setNewPhoneNumber('')        
+    }
+    } else {
+        peopleService
+          .create(personObject)
+          .then(returnedPerson => {
+            setPeople(people.concat(returnedPerson))
+            setNewName('')
+            setNewPhoneNumber('')
+            setErrorMessage({
+              message: `${personObject.name} and their number ${personObject.number} added to the phonebook`,
+              type: 'errorSuccessful'
+            })
+          })
+          .catch(error => {
+            setErrorMessage({
+            message: error.response.data.error,
+            type: 'errorUnsuccessful'
+            })
+        })
+      }
+    setTimeout(() => {
+    setErrorMessage(null)
+    }, 5000)
+  }  
 
   const handleNameAdd = (event) => {
     setNewName(event.target.value)
@@ -101,12 +117,12 @@ const App = () => {
   }
 
   const handleDeletePerson = (id) => {
-    const personOfId = persons.filter(person => person.id === id)[0]
+    const personOfId = people.filter(person => person.id === id)[0]
     if (window.confirm(`Delete ${personOfId.name}?`)) {
-      personsService
+      peopleService
         .deletePerson(id)
         .then(() => {
-          setPersons(persons.filter(person => person.id !== id))
+          setPeople(people.filter(person => person.id !== id))
           setErrorMessage({
             message: `${personOfId.name} and their number ${personOfId.number} deleted from the phonebook`,
             type: 'errorSuccessful'
@@ -127,11 +143,11 @@ const App = () => {
       <FilterForm onChange={handleFilterChange} nameFilter={nameFilter}/>
         
       <h3>add a new</h3>
-      <PersonForm onSubmit={addPerson} name={newName} onNameChange={handleNameAdd} phoneNumber={newPhoneNumber} onNumberChange={handlePhoneNumberAdd} />
+      <PersonForm onSubmit={handleAddOrEditPerson} name={newName} onNameChange={handleNameAdd} phoneNumber={newPhoneNumber} onNumberChange={handlePhoneNumberAdd} />
       <h2>Numbers</h2>
       <ul>
-        <Persons
-            persons={persons}
+        <People
+            people={people}
             nameFilter={nameFilter}
             handleDeletePerson={handleDeletePerson} />
       </ul>
