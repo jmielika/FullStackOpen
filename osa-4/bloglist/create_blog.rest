@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/blogs/
+Content-Type: application/json
+
+{
+    "title" : "ukkomiehen työtä",
+    "author": "Oikee tosiukko",
+    "url" : "www.ukkomies.fi",
+    "likes" : 6
+}
