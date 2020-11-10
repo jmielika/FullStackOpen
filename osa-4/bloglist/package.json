@@ -8,9 +8,9 @@
     "dev": "nodemon index.js",
     "deploy": "git push heroku master",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "logs:prod": "heroku logs --tail",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "jest --verbose"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -22,6 +22,10 @@
   "license": "MIT",
   "devDependencies": {
     "eslint": "^7.7.0",
+    "jest": "^26.4.2",
     "nodemon": "^2.0.4"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }

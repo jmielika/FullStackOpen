@@ -2,8 +2,8 @@ POST http://localhost:3001/api/blogs/
 Content-Type: application/json
 
 {
-    "title" : "ukkomiehen työtä",
-    "author": "Oikee tosiukko",
-    "url" : "www.ukkomies.fi",
-    "likes" : 6
+    "title" : "paskahommien blogi",
+    "author": "perisuomalainen",
+    "url" : "www.paskahommia.fi",
+    "likes" : 8
 }
